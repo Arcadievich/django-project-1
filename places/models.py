@@ -14,3 +14,25 @@ class Place(models.Model):
 
     def __str__(self):
         return f'{self.title}'
+    
+
+class PlaceImage(models.Model):
+    """Модель для картинок локаций."""
+    place = models.ForeignKey(
+        Place,
+        on_delete=models.CASCADE,
+        related_name='images',
+        verbose_name='Место',
+    )
+    image = models.ImageField(
+        'Изображение',
+        upload_to='static/images/'
+    )
+    order = models.PositiveIntegerField(
+        'Порядок сортировки',
+        default=1,
+        help_text='Чем число меньше, тем выше в списке',
+    )
+
+    def __str__(self):
+        return f'{self.order} - {self.place.title}'
