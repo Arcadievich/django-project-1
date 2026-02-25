@@ -1,13 +1,15 @@
-from django.shortcuts import render
-from places.models import Place, PlaceImage
+from django.shortcuts import render, get_object_or_404
+from places.models import Place
 import json
 
 
 def show_index(request):
-    places = Place.objects.all()
+    places = Place.objects.prefetch_related('images').all()
 
     features = []
     for place in places:
+        images_url = [image.image.url for image in place.images.all()]
+
         feature = {
             'type': 'Feature',
             'geometry': {
@@ -17,8 +19,11 @@ def show_index(request):
             'properties': {
                 'title': place.title,
                 'placeId': str(place.id),
-                'detailsUrl': f'static/places/{place.id}.json'
-            }
+                'imgs': images_url,
+                'description_short': place.description_short,
+                'description_long': place.description_long,
+                'detailsUrl': f'static/places/1.json',
+            },
         }
         features.append(feature)
 
