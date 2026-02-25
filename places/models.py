@@ -34,5 +34,8 @@ class PlaceImage(models.Model):
         help_text='Чем число меньше, тем выше в списке',
     )
 
+    class Meta:
+        ordering = ['order']
+
     def __str__(self):
         return f'{self.order} - {self.place.title}'
