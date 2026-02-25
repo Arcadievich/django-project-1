@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404
+from django.urls import reverse
 from places.models import Place
 import json
 
@@ -22,7 +23,7 @@ def show_index(request):
                 'imgs': images_url,
                 'description_short': place.description_short,
                 'description_long': place.description_long,
-                'detailsUrl': f'static/places/1.json',
+                'detailsUrl': reverse('place_details_json', args=[place.id]),
             },
         }
         features.append(feature)

@@ -6,5 +6,5 @@ from places.views import place_json
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.show_index),
-    path('place/<int:place_id>/', place_json, name='places')
+    path('place/<int:place_id>/', place_json, name='place_details_json')
 ]
