@@ -29,4 +29,5 @@ class PlaceImageAdmin(SortableAdminMixin, admin.ModelAdmin):
 
 @admin.register(Place)
 class PlaceAdmin(SortableAdminBase, admin.ModelAdmin):
+    list_display = ['title', 'description_short', 'lon', 'lat']
     inlines = [PlaceImageInline]
