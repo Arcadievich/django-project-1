@@ -3,6 +3,7 @@
 
 # Media
 **/images/
+.sqlite3
 
 # VS Code
 .vscode
