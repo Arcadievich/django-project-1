@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
+
 from places.models import Place
-import json
 
 
 def show_index(request):
@@ -33,6 +33,4 @@ def show_index(request):
         'features': features
     }
 
-    places_json = json.dumps(places_geojson, ensure_ascii=False)
-
-    return render(request, 'index.html', {'places_geojson': places_json})
+    return render(request, 'index.html', {'places_geojson': places_geojson})
