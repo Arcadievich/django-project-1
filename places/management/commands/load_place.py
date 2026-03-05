@@ -1,7 +1,9 @@
 import requests
+
 from django.core.management.base import BaseCommand, CommandError
 from django.core.files.base import ContentFile
 from django.db import transaction
+
 from places.models import Place, PlaceImage
 
 
