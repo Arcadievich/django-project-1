@@ -13,8 +13,8 @@ def place_json(request, place_id):
     place_details = {
         'title': place.title,
         'imgs': imgs,
-        'description_short': place.description_short,
-        'description_long': place.description_long,
+        'description_short': place.short_description,
+        'description_long': place.long_description,
         'coordinates': {
             'lat': place.lat,
             'lng': place.lon,
@@ -45,8 +45,8 @@ def show_index(request):
                 'title': place.title,
                 'placeId': str(place.id),
                 'imgs': images_url,
-                'description_short': place.description_short,
-                'description_long': place.description_long,
+                'description_short': place.short_description,
+                'description_long': place.long_description,
                 'detailsUrl': reverse('place_details_json', args=[place.id]),
             },
         }

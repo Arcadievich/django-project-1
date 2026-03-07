@@ -31,5 +31,10 @@ class PlaceImageAdmin(SortableAdminMixin, admin.ModelAdmin):
 
 @admin.register(Place)
 class PlaceAdmin(SortableAdminBase, admin.ModelAdmin):
-    list_display = ['title', 'description_short', 'lon', 'lat']
+    list_display = ['title', 'short_description', 'lon', 'lat']
     inlines = [PlaceImageInline]
+
+    class Media:
+        css = {
+            'all': ('admin/css/custom_admin.css',)
+        }
