@@ -33,7 +33,7 @@ class PlaceImage(models.Model):
     )
     image = models.ImageField(
         'Изображение',
-        upload_to='static/images/'
+        upload_to='images/'
     )
     order = models.PositiveIntegerField(
         'Порядок сортировки',
