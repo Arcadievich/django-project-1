@@ -19,9 +19,9 @@ class Command(BaseCommand):
         try:
             response = requests.get(url)
             response.raise_for_status()
-            place_json = response.json()
+            raw_place = response.json()
 
-            self.load_place(place_json)
+            self.load_place(raw_place)
 
         except requests.exceptions.RequestException as e:
             raise CommandError(f'Ошибка при загрузке по URL: {e}')
@@ -31,26 +31,19 @@ class Command(BaseCommand):
             raise CommandError(f'Ошибка: {e}')
         
     @transaction.atomic
-    def load_place(self, place_json):
-        place, created = Place.objects.get_or_create(
-            title=place_json['title'],
+    def load_place(self, raw_place):
+        place, created = Place.objects.update_or_create(
+            title=raw_place['title'],
             defaults={
-                'description_short': place_json.get('description_short', ''),
-                'description_long': place_json.get('description_long', ''),
-                'lat': place_json['coordinates']['lat'],
-                'lon': place_json['coordinates']['lng'],
+                'description_short': raw_place.get('description_short', ''),
+                'description_long': raw_place.get('description_long', ''),
+                'lat': raw_place['coordinates']['lat'],
+                'lon': raw_place['coordinates']['lng'],
             }
         )
 
-        if not created:
-            place.description_short = place_json.get('description_short', '')
-            place.description_long = place_json.get('description_long', '')
-            place.lat = place_json['coordinates']['lat']
-            place.lon = place_json['coordinates']['lng']
-            place.save()
-
-        if 'imgs' in place_json:
-            self.load_images(place, place_json['imgs'])
+        if 'imgs' in raw_place:
+            self.load_images(place, raw_place['imgs'])
 
     def load_images(self, place, image_urls):
         existing_images = PlaceImage.objects.filter(place=place)
@@ -69,11 +62,10 @@ class Command(BaseCommand):
                 response = requests.get(img_url, stream=True)
                 response.raise_for_status()
 
-                image = PlaceImage(place=place, order=order)
-                image.image.save(
-                    img_name,
-                    ContentFile(response.content),
-                    save=True
+                image = PlaceImage(
+                    place=place,
+                    order=order,
+                    image=ContentFile(response.content, name=img_name)
                 )
             except requests.exceptions.RequestException:
                 continue

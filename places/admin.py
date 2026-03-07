@@ -14,7 +14,7 @@ class PlaceImageInline(SortableTabularInline):
     def preview(self, obj):
         url = obj.image.url
 
-        return format_html(f'<img src="{url}" style="max-height: 200px;" />')
+        return format_html('<img src="{}" style="max-height: 200px; max-width: 200px;" />', url)
     
     preview.short_description = 'Превью'
 
@@ -22,11 +22,12 @@ class PlaceImageInline(SortableTabularInline):
 @admin.register(PlaceImage)
 class PlaceImageAdmin(SortableAdminMixin, admin.ModelAdmin):
     list_display = ['id', 'place', 'image', 'preview', 'order']
+    raw_id_fields = ['place']
 
     def preview(self, obj):
         url = obj.image.url
 
-        return format_html(f'<img src="{url}" style="max-height: 200px;" />')
+        return format_html('<img src="{}" style="max-height: 200px; max-width: 200px;" />', url)
 
 
 @admin.register(Place)
