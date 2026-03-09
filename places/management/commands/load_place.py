@@ -62,7 +62,7 @@ class Command(BaseCommand):
                 response = requests.get(img_url, stream=True)
                 response.raise_for_status()
 
-                image = PlaceImage(
+                image = PlaceImage.objects.create(
                     place=place,
                     order=order,
                     image=ContentFile(response.content, name=img_name)
