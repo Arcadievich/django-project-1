@@ -35,8 +35,8 @@ class Command(BaseCommand):
         place, created = Place.objects.update_or_create(
             title=raw_place['title'],
             defaults={
-                'description_short': raw_place.get('description_short', ''),
-                'description_long': raw_place.get('description_long', ''),
+                'short_description': raw_place.get('description_short', ''),
+                'long_description': raw_place.get('description_long', ''),
                 'lat': raw_place['coordinates']['lat'],
                 'lon': raw_place['coordinates']['lng'],
             }
